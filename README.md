@@ -1,3 +1,7 @@
+## Why fork this?
+
+This is a slight rewrite of certain f string glob lines that cause syntax errors in older versions of Python 3. This version has been verified to work on the stock Python version in the GameShell Clockwork Pi (Python 3.5.3).
+
 # super-beheader
 
 Remove copier headers from SNES roms (aka SMC to SFC converter).
