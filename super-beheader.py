@@ -50,7 +50,7 @@ def unzip_roms(rom, output_dir):
             if os.path.splitext(m)[1].lower() in ('.smc', '.sfc')
         ]
         zrom.extractall(path, members)
-        extracted = glob.glob(f'{path}/**/*.s[mf]c', recursive=True)
+        extracted = glob.glob('{}/**/*.s[mf]c'.format(path), recursive=True)
 
     return extracted
 
@@ -66,7 +66,7 @@ def safe_output(output):
     suffix = 0
 
     while True:
-        output = f'{name}.beheaded{"." + str(suffix) if suffix else ""}{ext}'
+        output = '{}.beheaded{}{}'.format(name, "." + str(suffix) if suffix else "", ext)
         suffix = suffix + 1
 
         if not os.path.exists(output):
@@ -78,11 +78,11 @@ def behead(rom, output_dir):
     logger = get_logger()
 
     name, _ = os.path.splitext(os.path.basename(rom))
-    output = safe_output(os.path.join(output_dir, f'{name}.sfc'))
+    output = safe_output(os.path.join(output_dir, '{}.sfc'.format(name)))
 
     cheader_size = os.path.getsize(rom) % 1024
 
-    logger.info(f'Rom: {name} - {"SMC" if cheader_size else "SFC"} format')
+    logger.info('Rom: {} - {} format'.format(name, "SMC" if cheader_size else "SFC"))
 
     with open(rom, 'rb') as fin:
         with open(output, 'wb') as fout:
@@ -104,14 +104,14 @@ def process(input_, output_dir, tmp_dir, zipped):
 
         if zipped:
             name, _ = os.path.splitext(basename)
-            output = safe_output(os.path.join(output_dir, f'{name}.zip'))
+            output = safe_output(os.path.join(output_dir, '{}.zip'.format(name)))
             zip_rom(sfc, output)
 
         else:
             output = safe_output(os.path.join(output_dir, basename))
             shutil.copy(sfc, output)
 
-        logger.info(f'Beheaded SFC available in {output}')
+        logger.info('Beheaded SFC available in {}'.format(output))
 
 def main(*args):
     logger = get_logger()
